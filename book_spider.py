@@ -2,13 +2,14 @@ import requests
 from lxml import html
 from lxml import etree
 from chinese_to_int import *
+from send_to_qq import sendmail4
 import re
 import threading
 import time
 
 path = "D:/小说爬虫"    ###文件路径
-name = "一念永恒"     ###文件姓名
-url = "http://www.biqu.cm/0_852/"        ##起始IP 
+name = "火影之活久见"     ###文件姓名
+url = "http://www.biqu.cm/28_28691/"        ##起始IP 
 num = 20 ##线程数
 header  = {
     "Host" :"www.biqu.cm",
@@ -35,8 +36,10 @@ def run():
             t.start()
         if x % num == 0:
             time.sleep(0.1)
-    time.sleep(1)
+    time.sleep(5)
     print(merge_txt(path,name))     ###将分散的TXT单章合并
+    sendmail4(path,name)
+    print("已发送到邮箱")
 
 def deal(url,page):
     global path,name,header,proxies
