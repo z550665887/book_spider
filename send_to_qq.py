@@ -3,16 +3,8 @@ import email.mime.multipart
 import email.mime.text
 from email.mime.application import MIMEApplication
 
-data = {
-"toaddr" : "xxxxxxx@qq.com",
-"fromaddr":"xxxxxx@126.com",
-"host":"smtp.126.com",
-"user":"xxxxx",
-"pwd":"xxxxxxx"
-}
 
-def sendmail4(path,name):                         ###发送邮件函数
-    global data
+def sendmail4(path,name,message):                         ###发送邮件函数
     subject="测试"
     message="测试"
     msg=email.mime.multipart.MIMEMultipart()
@@ -25,11 +17,11 @@ def sendmail4(path,name):                         ###发送邮件函数
 
     msg['Subject'] = subject
     msg.attach(email.mime.text.MIMEText(message))
-    msg['From'] = data['fromaddr']
-    msg['To']= data['toaddr']
-    server = smtplib.SMTP(data['host'])
-    server.login(data['user'],data['pwd'])
+    msg['From'] = message['fromaddr']
+    msg['To']= message['toaddr']
+    server = smtplib.SMTP(message['host'])
+    server.login(message['user'],message['pwd'])
     #server.set_debuglevel(1)
-    server.sendmail(data['fromaddr'], data['toaddr'], msg.as_string())
+    server.sendmail(message['fromaddr'], message['toaddr'], msg.as_string())
     server.quit()
 

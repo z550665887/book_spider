@@ -6,19 +6,14 @@ from send_to_qq import sendmail4
 import re
 import threading
 import time
+from config import configs
 
-
-path = "D:/小说爬虫"    ###文件路径
-book_name = "修真聊天群"     ###文件姓名
-num = 20 ##线程数
-
-header  = {
-    "Host" :"www.biqu.cm",
-    "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0"  
-}
-proxies ={              ###代理IP需要顶似乎更新
-    "http":'http://58.16.42.112:80'
-}
+path = configs['path']    ###文件路径
+book_name = configs['book_name']     ###文件姓名
+num = configs['num'] ##线程数
+header  = configs['header']
+proxies = configs['proxies']
+message = configs['message']        ###邮件发送配置
 
 def search(book_name):
     a = book_name.encode("gb2312")
@@ -34,7 +29,7 @@ def search(book_name):
     return url_back[0].replace('/wap','')
 
 def run(url):
-    global path,book_name,header,proxies
+    global path,book_name,header,proxies,message
     s = requests.get(url,headers=header,proxies = proxies)
     tree = html.fromstring(s.text)
     url_date = tree.xpath("//dd/a/@href")
@@ -51,7 +46,7 @@ def run(url):
             time.sleep(0.1)
     time.sleep(5)
     print(merge_txt(path,book_name))     ###将分散的TXT单章合并
-    sendmail4(path,book_name)
+    sendmail4(path,book_name,message)
     print("已发送到邮箱")
 
 def deal(url,page):
