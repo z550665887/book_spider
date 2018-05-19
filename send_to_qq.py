@@ -6,7 +6,7 @@ from email.mime.application import MIMEApplication
 
 def sendmail4(path,name,message):                         ###发送邮件函数
     subject="测试"
-    message="测试"
+    messages="测试"
     msg=email.mime.multipart.MIMEMultipart()
     '''
     添加附件
@@ -16,7 +16,8 @@ def sendmail4(path,name,message):                         ###发送邮件函数
     msg.attach(txtpart)
 
     msg['Subject'] = subject
-    msg.attach(email.mime.text.MIMEText(message))
+    msg.attach(email.mime.text.MIMEText(messages))
+    print()
     msg['From'] = message['fromaddr']
     msg['To']= message['toaddr']
     server = smtplib.SMTP(message['host'])

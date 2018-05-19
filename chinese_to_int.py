@@ -14,10 +14,10 @@ chs_arabic_map = {u'零':0, u'一':1, u'二':2, u'三':3, u'四':4,
 def change_to_GBK(url_title):
     if isinstance(url_title,list):
         for x in range(len(url_title)):
-            url_title[x]= url_title[x].encode('latin-1').decode('GBK')
+            url_title[x]= url_title[x].encode('latin-1').decode('GBK',"ignore")
         return url_title
     elif isinstance(url_title,str):
-        url_title= url_title.encode('latin-1').decode('GBK')
+        url_title= url_title.encode('latin-1').decode('GBK',"ignore")
         return url_title
 
 def sort_title(url_title,url_date):
