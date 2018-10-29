@@ -12,7 +12,7 @@ from urllib import parse
 path = configs['path']    ###文件路径
 book_name = configs['book_name']     ###文件姓名
 num = configs['num'] ##线程数
-header  = configs['header']
+headers  = configs['headers']
 proxies = configs['proxies']
 message = configs['message']        ###邮件发送配置
 
@@ -23,15 +23,17 @@ def search(book_name):
     s = requests.session()
     s.get(url="http://www.biqu.cm/modules/article/search.php")
     a = s.post(url=url,data=data,headers=headers,proxies=proxies, allow_redirects=False)
+    url_back = ""
     if a.status_code == 302:
         url_back = a.headers['Location']
     elif a.status_code == 200:
         tree = html.fromstring(a.content.decode('gbk'))
         url_title = tree.xpath("//tr[@id='nr']/td[@class='odd']/a/text()")
         url_date = tree.xpath("//tr[@id='nr']/td[@class='odd']/a/@href")
+        print(tree)
         info = {url_title[x]:url_date[x] for x in range(len(url_title))}
         for key, value in info.items():
-            if key == book:
+            if key == book_name:
                 url_back = value
                 break
     if not url_back:
@@ -39,22 +41,25 @@ def search(book_name):
     return url_back
 
 def run(url):
-    global path,book_name,header,proxies,message
+    global path,book_name,headers,proxies,message
     if not os.path.exists(path+"/"+book_name):
         os.mkdir(path+"/"+book_name)
-    s = requests.get(url=url,headers=header,proxies = proxies)
+    print(url)
+    s = requests.get(url=url,proxies = proxies)
     tree = html.fromstring(s.text)
     url_date = tree.xpath("//dd/a/@href")
-    # print(url_date)
+    print(url_date)
+    # print(s.content)
 
     for x in range(len(url_date)):
         if url_date[x] != -1:
             urls = "http://www.biqu.cm"+url_date[x]
             # page = page_title[x]
             try:
+                pass
                 deal(urls)
             except:
-                pass
+                traceback.print_exc()
         # if x % num == 0:
         #     time.sleep(0.1)
     time.sleep(5)
@@ -63,8 +68,8 @@ def run(url):
     print("已发送到邮箱")
 
 def deal(url):
-    global path,book_name,header,proxies
-    s = requests.get(url,headers=header,proxies = proxies)
+    global path,book_name,headers,proxies
+    s = requests.get(url,proxies = proxies)
     tree = etree.HTML(s.content)
     title = tree.xpath("//h1/text()")
     message = tree.xpath("//div[@id='content']/text()")
@@ -84,7 +89,7 @@ def deal(url):
 
 
 if __name__  == "__main__":
-    # url = "http://www.biqu.cm"+search(book_name)
-    url = "http://www.biqu.cm/7_7067/"
+    url = search(book_name)
+    # url = "http://www.biqu.cm/7_7067/"
     print(url)
     run(url)

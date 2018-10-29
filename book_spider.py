@@ -13,7 +13,7 @@ from urllib import parse
 path = configs['path']    ###文件路径
 book_name = configs['book_name']     ###文件姓名
 num = configs['num'] ##线程数
-header  = configs['header']
+headers  = configs['headers']
 proxies = configs['proxies']
 message = configs['message']        ###邮件发送配置
 

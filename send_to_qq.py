@@ -22,7 +22,7 @@ def sendmail4(path,name,message):                         ###发送邮件函数
     msg['To']= message['toaddr']
     server = smtplib.SMTP(message['host'])
     server.login(message['user'],message['pwd'])
-    #server.set_debuglevel(1)
+    # server.set_debuglevel(1)
     server.sendmail(message['fromaddr'], message['toaddr'], msg.as_string())
     server.quit()
 
