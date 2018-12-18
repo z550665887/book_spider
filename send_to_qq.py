@@ -5,8 +5,8 @@ from email.mime.application import MIMEApplication
 
 
 def sendmail4(path,name,message):                         ###发送邮件函数
-    subject="测试"
-    messages="测试"
+    subject="采集小说"
+    messages="正文见附件"
     msg=email.mime.multipart.MIMEMultipart()
     '''
     添加附件
